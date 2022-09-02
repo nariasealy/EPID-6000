@@ -1,0 +1,286 @@
+---
+title: 'Practicum 1: Software Setup and Reproducible Research'
+author: 'Data Science for Biomedical Informatics (BMIN503/EPID600)'
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+  
+---
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 400)
+```  
+
+***
+
+### Introduction
+The purpose of this practicum is to install the primary software that we will use throughout the course. Rather than work with servers or virtual machines that have pre-installed software, we will install programs and packages, as doing so is a required skill in data science. Completion of the steps below is also necessary for future coursework.
+
+You will create a new repo on GitHub from scratch and fork an existing one, and learn how to edit and update a repo. As you create a product or contribute to someone else's, you can save local copies as well as keep copies on GitHub. Storing repos on GitHub will help you track your own work, collaborate with others, and contribute data/software to the scientific community.
+
+### Install R
+- Go to http://cran.rstudio.com/
+- Click on the "Download R for [operating system]" link that is appropriate for your operating system and follow the instructions.
+- Open R and make sure it works.
+
+
+### Install RStudio
+- Go to https://www.rstudio.com/products/rstudio/download/#download
+- Select the installer that is appropriate for your operating system under "Installers for Supported Platforms" and follow the instructions. The one that is recommended is likely the appropriate one.
+- Open RStudio and make sure it works.
+
+
+### RStudio Overview
+As discussed in lecture, RStudio is a free R user interface that makes development of code and integration of R files with reproducible research tools very straightforward. Explore the RStudio windows and tabs. You can execute R code directly within an Rmd file by using the "Run" button in the menu bar, the green arrow above a code chunk, or using Cmd+Enter (Mac) or Ctrl+Enter (Windows) on a set of code lines. In the R Console, you can also type and execute R commands directly. For example, try these commands in the Console (in the html file, you should type in the commands in boxes without hashtags, and the output should be what appears in the boxes with hashtags or the plot):
+```{r, eval = TRUE}
+1 + 2
+c(1:5)
+cat("hello", "there")
+x <- rnorm(1000)
+hist(x)
+```
+
+The Terminal window is the one we will use to execute git commands. We will discuss R commands in more detail later. Above the R Console, the text editor enables you to edit files with R code or create text files as above. To the right, there are windows that show variables loaded, history of commands, connections (e.g., via git), file path navigation, R plot output, package installation, and R documentation.
+
+
+#### R Settings
+Prior to working in R, there are some Console commands that you should become familiar with. The current _working directory_, where your data is read and saved to can be checked by typing the following in the Console:
+```{r, eval = FALSE}
+getwd()
+```
+To see what files are in this current directory:
+```{r, eval = FALSE}
+dir()
+```
+To see what functions are loaded:
+```{r, eval = FALSE}
+ls()
+```
+
+To change directories, you can use `setwd()` within the command line or in an R script. With RStudio, we can use GUI tools to do all of the above. For example, you can change directories by browsing to one: go to Session -> Set Working Directory -> Choose Directory, then select a new directory. Alternatively, you can use the "Files" panel. If you log in to a Unix server and have to use R on its own, then commands such as the above may become useful to run scripts.
+
+
+#### R Packages
+Many of the R functions we use are in packages, which have to be installed and loaded prior to use. From the R console, install these packages from CRAN:
+```{r, eval = FALSE}
+install.packages("knitr")
+install.packages("rmarkdown")
+install.packages("tidyverse")
+```
+
+In RStudio, packages can be installed interactively with the "Install Packages" tool in the "Packages" tab. Once packages are installed, it is necessary to tell R about them each time you start an R session or include them within a script where they are used with the `library()` command:
+```{r, eval = FALSE}
+library(tidyverse)
+```
+To see loaded packages, use the `search()` function. RStudio will recognize that there are uninstalled packages if you open an Rmd file with a `library()` call to a package that isn't installed and prompt you to install them.
+
+#### Help in R
+To get help about specific R functions, type `?` before the command. In RStudio, the effect of this will be to open the `Help` window with documentation for that specific command.
+```{r, eval = FALSE}
+?read.table
+```
+More broadly, when you don't know the name of the command you are looking for, you can use the following command to do a text search through the R documentation:
+```{r, eval = FALSE}
+help.search("average")
+```
+
+Recall that web searches often locate answers to problems encountered or can be used to look up functions. Use `sessionInfo()` when asking a question about R either by email or to a forum. This helps others understand the environment where a problem arises.
+
+
+#### R Scripts
+Any text editor can be used to edit R files, including the one that is available via the R console. We will use RStudio to edit text files with R commands. _R script_ files (.R ending) consist of R functions, comments, and variables. To create a new R script file, use the RStudio new document icon in the upper-left-hand corner and select "R Script". In the new document, type the following:
+```{r, eval = FALSE}
+#Test R script
+x <- 1
+y <- 2
+x + y
+```
+Now save the file as `test.R`. To execute the code, click on "Run" above the text editor window. Note that the single line where the cursor is located is run by default. You can select multiple lines of code and then click "Run" to execute more than one line. To run the entire document, you can select "Source" instead. Alternatively, you can load an R script into your R environment at the command line by typing: 
+```{r, eval = FALSE}
+source("test.R")
+```
+Verify that the contents of `test.R` loaded properly by typing `x` and `y` at the command line. Now modify their values in the document and repeat the steps to see their values changed.
+
+
+#### R Markdown
+For class, we will mostly use R Markdown files (.Rmd ending) since these are easily converted into visually appealing output documents that include text, graphics, and R code. Such documents are a great way to keep a "lab notebook" for data science projects. To create a new R Markdown file, use the RStudio new document icon in the upper-left-hand corner and select "R Markdown". Give it a title and author of your choice (or leave the default options) and click "OK". The new document has some sample text and commands that illustrate some of the main components of an R Markdown file. To save the R Markdown file, use File -> Save As, and then choose a `test.Rmd` and click "Save". Click on the "Knit" icon at the top of the file to generate an html document based on the template and compare the two. If you'd like, repeat this with PDF and Word options to see other output formats. For these latter two to work, you have to have additional software installed on your computer.
+
+You can download an R Markdown cheat sheet under Help->Cheat Sheets menu of RStudio, and read more about it here: http://rmarkdown.rstudio.com. To see all of the settings possible with html documents, you can read this [guide](http://rmarkdown.rstudio.com/html_document_format.html).
+
+
+### Install Git
+- Go to https://git-scm.com/downloads
+- Click on the link that corresponds to your operating system and follow instructions.
+- You can get additional guidance in this [book](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) if the options on the download page are confusing.
+- Go to the Terminal panel and type ```git --version``` to make sure the installation worked
+
+
+### Use Git
+- Go the the Terminal tab in Rstudio
+- Set up your username and email by using the following commands - be sure to replace "First Last" with **your** name and "your_email@domain.com" with **your** email. We are also setting default behavior to name initial branch `main`:
+```
+      git config --global user.name "First Last"
+      git config --global user.email "your_email@domain.com"
+      git config --global push.default simple
+      git config --global pull.rebase false
+      git config --global init.defaultBranch main
+```
+- See options that are set and verify that your name and email are correct:
+```
+      git config --list
+```
+
+### Set up a Github Account 
+
+If you already have a GitHub account, make sure that the email used there is the same as the one you added with `git config`. If you need to set up an account, follow these steps:
+
+- Go to https://github.com
+- Enter the **same** email as used with git
+- Enter a password
+- Click "Sign up for GitHub"
+- Select "Free plan"
+- Click "Finish sign up"
+- Inspect profile page and edit if you'd like.
+
+Many tutorials are available on the [GitHub](https://guides.github.com/) site. Feel free to watch the videos and/or read more about GitHub, especially if you have never used it before.
+
+
+### Create a Github Repository
+- Click "+" in upper-right hand corner of your GitHub page.
+- Give the repository a name (e.g. test-repo)
+- Leave "public" default
+- Under "Initialize this repository with:" select "Add a README file"
+- Click "Create repository"
+
+You have created a new repository that is located on the web in GitHub. This repository is a very simple one, containing a single README file. Most repositories contain several files of various formats depending on their nature. The format of readme files on GitHub is _markdown_ (ending .md), a quick guide of it is available [here](https://guides.github.com/features/mastering-markdown/). Next, make a local copy of this remote repository you created:
+
+- Go to the Terminal tab in Rstudio
+- Go to a directory of your choice (instructions that follow are for your home directory "~"):
+```
+      cd ~
+      mkdir test-repo
+      cd test-repo
+```
+- Initialize a git repository:
+```
+      git init
+```
+- Point this local repository to the one on GitHub. Be sure to replace "[your github username]" with the GitHub username you just created. Note that you can copy the address shown in your web browser and then add _.git_ at the end to get the GitHub repository name.
+```
+      git remote add origin https://github.com/[your github username]/test-repo.git
+      git pull https://github.com/[your github username]/test-repo.git main
+```
+
+The first command indicated where the new repo is located, while the second command brought down the files and made a local copy of them. Thus, you now have a copy of the remote repository stored on your local computer. You can view the new files (or single file, in our case) by typing `ls`. 
+
+
+### Connect to GitHub using ssh keys
+It is much easier to use GitHub with ssh keys on your own computer to avoid having to enter username/password each time you push changes to GitHub. Follow this [guide](https://help.github.com/articles/connecting-to-github-with-ssh/) to add ssh keys. Make sure your ssh keys work by testing the SSH connection as described in this [step](https://help.github.com/articles/testing-your-ssh-connection/):
+```
+ssh -T git@github.com
+```
+
+GitHub recently enabled a new security feature that requires use personal access tokens (PAT) to connect with GitHub on the command line. When asked to provide your username and password, you use the PAT as the password. To create the PAT and use it, follow this [guide](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+
+Additionally, GitHub now suggests use of 2FA web and app logins. Follow the instructions [here](https://docs.github.com/en/github/authenticating-to-github/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication) to configure 2FA on your device. 
+ 
+
+### Fork a Repository
+Rather than create a new repository of our own on GitHub, you can create copies of repositories created by others as a starting point for our work. Copying someone else's repository to your own account is referred to as _forking_ a repository.
+
+- Go to this repository https://github.com/jtleek/datasharing
+- Select "Fork"
+
+Now you have a copy of this repository on your own GitHub account. To copy this forked repository to your local computer:
+
+- Go to the Terminal tab in Rstudio
+- Go to a directory of your choice (instructions that follow are for your home directory "~"). Be sure to replace "[your github username]" with your GitHub username 
+```
+      cd ~
+      git clone https://github.com/[your github username]/datasharing.git
+      cd datasharing
+```
+
+You should now have a copy of the forked repository stored on your local computer. You can view the new files (or single file, in our case) by typing `ls`. 
+
+
+### Update a Repository
+As you work on a project by updating code, data files, documentation, etc, you can save versions to GitHub. Additionally, as repositories are updated on GitHub by others, you can keep updating your local copies. This way, teams can keep track of the latest version of a project and go back to previous versions as necessary.
+
+In the Terminal, go to the local repository folder `test-repo` if not already there. 
+```
+cd [your-path]/test-repo
+```
+Now, create a new file in the repo titled test.txt and add a line of text to it. You can do this directly in RStudio, by creating a new Text File (click the upper left icon with a green plus sign and find the Text File option) that is saved to the repository folder. Now let's update the repo. First, _commit_ the changes locally, and then update the remote repo on GitHub. In the Terminal, let git know what new and modified existing files are part of the repo, by typing the following: 
+```
+git add -A 
+```
+Use the last command to add the new text files you created to the staging area. To _commit_ all changed files as the current state of a local repo, type:
+```
+git commit -m "[message about commit]"
+```
+Lastly, update the remote repository (GitHub in our case) by _pushing_ the committed repo:
+```
+git push --set-upstream origin main
+```
+Note that you will likely have trouble with this step if you don't have ssh keys set up. Go back and make sure your keys work! Once the long version of the push command has run once, you can use the shortened push version and the settings from the previous entry will apply:
+```
+git push
+```
+Go to your GitHub account online, and check to be sure that the new files are there. To update a repo locally to its latest remote version, which is required prior to you pushing updates, you _pull_ the latest version:
+```
+git pull
+```
+
+Along the way as you work in a repo, you may want to find out its status. That is, you may want to know whether there are modified files, how the local repo compares to the `origin`, and whether any `commits` have been made. Use the command 
+```
+git status
+```
+to find out some information about your repo.
+
+If you receive errors related to being unable to push changes to `origin`, you will want to verify that your ssh connection to GitHub is working properly by typing:
+```
+ssh -T git@github.com
+```
+Additionally, you can verify that the `origin` is set properly by typing:
+```
+git remote -v
+```
+Confirm that the `origin` exists (try going to the website listed that precedes '.git'). To change the `origin` if there is a typo, use:
+```
+git remote set-url origin [correct website to the repo with '.git' at the end]
+```
+
+Oftentimes, rather than work on the main branch, you may want to create a branch to test new things. One common choice is to have a _development_ branch. If multiple people are working on different aspects of a project, each may want their own branch too. To create a new branch:
+```
+git checkout -b [branchname]
+```
+To see your current branch:
+```
+git branch
+```
+The main branch with the current version of the project is called _main_. To go to the main branch from another branch, you would type:
+```
+git checkout main
+```
+When you push your local repo, it will go to the branch you are currently working in. When the changes from a branch are ready to be part of the main repository, you _merge_ branches. For example, to merge `[branchname]` into the active branch you are working on, use:
+```
+git merge [branchname]
+```
+Conflicts between branches have to be resolved for the merge to complete. In cases where you want to merge changes back into a GitHub branch/repo that belongs to someone else, you need to send a _pull request_. For example, if you were to update the `datasharing` repo you forked and wanted its author, jtleek, to include your changes in his version, you would go to 
+
+https://github.com/jtleek/datasharing
+
+and click on the "Pull Requests" on the right-hand menu bar under "Code" and "Issues." Those are the basics of GitHub, but there are many other git/GitHub features you can learn about via resources such as the [Pro Git book](https://git-scm.com/book/en/v2) or this simple [git-guide](https://rogerdudler.github.io/git-guide/).
+
+
+### Connecting to GitHub within RStudio
+To link an existing GitHub repository to RStudio on your computer, select the "Project" Icon in the upper-right-hand corner of RStudio -> New Project -> Version Control -> Git. Enter the repository url for the GitHub repository (e.g. ``https://github.com/[your username]/test-repo.git``), a local project directory name (e.g. ``test-repo``), then select "Create Project". Notice that doing this will clone all of the remote files to your computer and now you can work on the project there. As you make changes to the project, you can use the "Git" tab to pull, commit, and push commands to sync between your local copy and that on GitHub.
+
+If when you open the RStudio "Project" icon you get a message about `Git Not Found`, you have to point to the location of the git executable in RStudio. Some instructions on how to do this are [here](http://happygitwithr.com/rstudio-see-git.html).
+
+We will use this approach to work on the final project. First, fork the [Final Project Repository](https://github.com/HimesGroup/BMIN503_Final_Project) to your GitHub account. Then, make a project for this repository on your computer by selecting the link to your copy on GitHub (remember to append `.git` to the copied `url`. You can now save changes to GitHub from RStudio where you will eventually have your final version to turn in via a pull request. 
+
+***
